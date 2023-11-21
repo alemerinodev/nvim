@@ -1,41 +1,41 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  	-- Telescope (find files)
-	{
-  		'nvim-telescope/telescope.nvim', tag = '0.1.2',
-		-- or                            , branch = '0.1.x',
-  		dependencies = { {'nvim-lua/plenary.nvim'} }
-  	},
+    -- Telescope (find files)
+    {
+        'nvim-telescope/telescope.nvim', tag = '0.1.2',
+        -- or                            , branch = '0.1.x',
+        dependencies = { {'nvim-lua/plenary.nvim'} }
+    },
 
-  	-- Indent Blankline (show indentation lines)
-  	"lukas-reineke/indent-blankline.nvim",
+    -- Indent Blankline (show indentation lines)
+    "lukas-reineke/indent-blankline.nvim",
 
-  	-- Treesitter (highlight code)
-  	{
-  		'nvim-treesitter/nvim-treesitter',
+    -- Treesitter (highlight code)
+    {
+        'nvim-treesitter/nvim-treesitter',
         build = function()
             local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
             ts_update()
         end,
         config = function()
             require'nvim-treesitter.configs'.setup {
-            ensure_installed = { "javascript", "lua", "vim", "vimdoc", "typescript", "go", "rust", "kotlin", "c", "cpp" },
-            sync_install = false,
-            auto_install = true,
-            highlight = {
-                enable = true,
+                ensure_installed = { "javascript", "lua", "vim", "vimdoc", "typescript", "go", "rust", "kotlin", "c", "cpp" },
+                sync_install = false,
+                auto_install = true,
+                highlight = {
+                    enable = true,
                     additional_vim_regex_highlighting = false,
                 },
                 indent = {
@@ -45,8 +45,8 @@ require('lazy').setup({
         end,
     },
 
-	-- Copilot
-	"github/copilot.vim",
+    -- Copilot
+    "github/copilot.vim",
 
     -- Colorscheme
     {
@@ -63,11 +63,23 @@ require('lazy').setup({
         end,
     },
 
-	-- Lualine (statusline)
-	{
-  		'nvim-lualine/lualine.nvim',
-		dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true }
-	},
+    -- Lualine (statusline)
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
+        config = function()
+            require('lualine').setup {
+                sections = {
+                    lualine_b = {
+                        {
+                            require("grapple").key,
+                            cond = require("grapple").exists
+                        }
+                    }
+                }
+            }
+        end,
+    },
 
     -- LSP Zero (LSP client with zero config) 
     {
@@ -143,5 +155,17 @@ require('lazy').setup({
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
         build = function() vim.fn["mkdp#util#install"]() end,
+    },
+
+    -- Oil
+    {
+        'stevearc/oil.nvim',
+        opts = {},
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+    },
+    {
+        "cbochs/grapple.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
     }
 })

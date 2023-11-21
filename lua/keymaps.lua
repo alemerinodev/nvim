@@ -1,7 +1,7 @@
 -- BASICS
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true })
+vim.keymap.set('n', '-', "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 -- TELESCOPE (navigation)
 local builtin = require('telescope.builtin')
@@ -21,3 +21,7 @@ vim.keymap.set('n', '<leader>ct', function() trouble.open() end, {})
 
 -- Markdown
 vim.keymap.set("n", "<leader>md", "<CMD>MarkdownPreviewToggle<CR>")
+
+-- Grapple
+vim.keymap.set("n", "<leader>t", require("grapple").toggle)
+vim.keymap.set("n", "<leader>p", require("grapple").popup_tags)
