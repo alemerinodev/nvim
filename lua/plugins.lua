@@ -167,5 +167,11 @@ require('lazy').setup({
     {
         "cbochs/grapple.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
+    },
+    {
+        'goolord/alpha-nvim',
+        config = function ()
+            require'alpha'.setup(require'alpha.themes.dashboard'.config)
+        end
     }
 })
