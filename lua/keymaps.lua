@@ -24,4 +24,4 @@ vim.keymap.set("n", "<leader>md", "<CMD>MarkdownPreviewToggle<CR>")
 
 -- Grapple
 vim.keymap.set("n", "<leader>t", require("grapple").toggle)
-vim.keymap.set("n", "<leader>p", require("grapple").popup_tags)
+vim.keymap.set("n", "<leader>p", require("grapple").toggle_tags)
