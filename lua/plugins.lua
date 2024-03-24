@@ -81,6 +81,29 @@ require('lazy').setup({
         end,
     },
 
+    -- Java LSP
+    {
+        'nvim-java/nvim-java',
+        dependencies = {
+            'nvim-java/lua-async-await',
+            'nvim-java/nvim-java-core',
+            'nvim-java/nvim-java-test',
+            'nvim-java/nvim-java-dap',
+            'MunifTanjim/nui.nvim',
+            'neovim/nvim-lspconfig',
+            'mfussenegger/nvim-dap',
+            {
+                'williamboman/mason.nvim',
+                opts = {
+                    registries = {
+                        'github:nvim-java/mason-registry',
+                        'github:mason-org/mason-registry',
+                    },
+                },
+            }
+        },
+    },
+
     -- LSP Zero (LSP client with zero config) 
     {
         'VonHeikemen/lsp-zero.nvim',
@@ -127,6 +150,22 @@ require('lazy').setup({
                             }
                         })
                     end,
+                    jdtls = function()
+                        lspconfig.jdtls.setup({
+                            cmd = {
+                                "jdtls",
+                                "--jvm-arg=" .. string.format("-javaagent:%s", vim.fn.expand "$MASON/share/jdtls/lombok.jar"),
+                            },
+                            configuration = {
+                                runtimes = {
+                                    {
+                                        name = 'Java',
+                                        path = '/Users/ale/.sdkman/candidates/java/current/bin/java',
+                                    }
+                                }
+                            }
+                        })
+                    end,
                 },
             })
         end,
@@ -164,6 +203,8 @@ require('lazy').setup({
         -- Optional dependencies
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
+
+    -- Grapple
     {
         "cbochs/grapple.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },

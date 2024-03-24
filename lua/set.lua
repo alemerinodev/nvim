@@ -26,7 +26,7 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = "100"
+vim.opt.colorcolumn = "120"
 
 --copy to system clipboard
 vim.opt.clipboard = "unnamedplus"
