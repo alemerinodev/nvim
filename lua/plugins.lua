@@ -11,6 +11,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local has_words_before = function()
+  unpack = unpack or table.unpack
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
 require('lazy').setup({
     -- Telescope (find files)
     {
@@ -46,7 +52,25 @@ require('lazy').setup({
     },
 
     -- Copilot
-    "github/copilot.vim",
+    {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        event = "InsertEnter",
+        lazy = true,
+        config = function()
+            require("copilot").setup({
+                suggestion = { enabled = false },
+                panel = { enabled = false },
+            })
+        end
+    },
+    {
+        "zbirenbaum/copilot-cmp",
+        config = function ()
+            require("copilot_cmp").setup()
+        end
+    },
+    { 'AndreM222/copilot-lualine' },
 
     -- Colorscheme
     {
@@ -70,12 +94,8 @@ require('lazy').setup({
         config = function()
             require('lualine').setup {
                 sections = {
-                    lualine_b = {
-                        {
-                            require("grapple").key,
-                            cond = require("grapple").exists
-                        }
-                    }
+                    lualine_b = { "grapple" },
+                    lualine_x = { 'copilot' ,'encoding', 'fileformat', 'filetype' }
                 }
             }
         end,
@@ -110,8 +130,46 @@ require('lazy').setup({
         branch = 'v3.x',
     },
     {'neovim/nvim-lspconfig'},
-    {'hrsh7th/cmp-nvim-lsp'},
-    {'hrsh7th/nvim-cmp'},
+    {
+        'hrsh7th/nvim-cmp',
+        dependencies = {
+            'hrsh7th/cmp-nvim-lsp'
+        },
+        config = function()
+            local cmp = require('cmp')
+            vim.opt.completeopt = { "menu", "menuone", "noselect" }
+            cmp.setup({
+                mapping = cmp.mapping.preset.insert({
+                    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+                    ['<Tab>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            if #cmp.get_entries() == 1 then
+                                cmp.confirm({ select = true })
+                            else
+                                cmp.select_next_item()
+                            end
+                        elseif has_words_before() then
+                            cmp.complete()
+                            if #cmp.get_entries() == 1 then
+                                cmp.confirm({ select = true })
+                            end
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                    ['C-e'] = cmp.mapping.close(),
+                    ['<CR>'] = cmp.mapping.confirm({
+                        behavior = cmp.ConfirmBehavior.Insert,
+                        select = true,
+                    })
+                }),
+                sources = {
+                    { name = "copilot", group_index = 2 },
+                    { name = "nvim_lsp", group_index = 2 }
+                }
+            })
+        end
+    },
     {'L3MON4D3/LuaSnip'},
     "williamboman/mason.nvim",
     {
@@ -196,6 +254,12 @@ require('lazy').setup({
         build = function() vim.fn["mkdp#util#install"]() end,
     },
 
+    -- Grapple
+    {
+        "cbochs/grapple.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
+
     -- Oil
     {
         'stevearc/oil.nvim',
@@ -204,11 +268,6 @@ require('lazy').setup({
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
 
-    -- Grapple
-    {
-        "cbochs/grapple.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },
-    },
     {
         'goolord/alpha-nvim',
         config = function ()
