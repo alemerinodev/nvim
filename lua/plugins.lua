@@ -12,17 +12,18 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local has_words_before = function()
-  unpack = unpack or table.unpack
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    unpack = unpack or table.unpack
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
 require('lazy').setup({
     -- Telescope (find files)
     {
-        'nvim-telescope/telescope.nvim', tag = '0.1.2',
+        'nvim-telescope/telescope.nvim',
+        tag = '0.1.2',
         -- or                            , branch = '0.1.x',
-        dependencies = { {'nvim-lua/plenary.nvim'} }
+        dependencies = { { 'nvim-lua/plenary.nvim' } }
     },
 
     -- Indent Blankline (show indentation lines)
@@ -36,7 +37,7 @@ require('lazy').setup({
             ts_update()
         end,
         config = function()
-            require'nvim-treesitter.configs'.setup {
+            require 'nvim-treesitter.configs'.setup {
                 ensure_installed = { "javascript", "lua", "vim", "vimdoc", "typescript", "go", "rust", "kotlin", "c", "cpp" },
                 sync_install = false,
                 auto_install = true,
@@ -66,11 +67,24 @@ require('lazy').setup({
     },
     {
         "zbirenbaum/copilot-cmp",
-        config = function ()
+        config = function()
             require("copilot_cmp").setup()
         end
     },
     { 'AndreM222/copilot-lualine' },
+    {
+        "CopilotC-Nvim/CopilotChat.nvim",
+        branch = "canary",
+        dependencies = {
+            { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+            { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+        },
+        opts = {
+            debug = false, -- Enable debugging
+            -- See Configuration section for rest
+        },
+        -- See Commands section for default commands if you want to lazy load on them
+    },
 
     -- Colorscheme
     {
@@ -83,7 +97,7 @@ require('lazy').setup({
             require("tokyonight").setup({
                 transparent = true,
             })
-            vim.cmd[[colorscheme tokyonight-moon]]
+            vim.cmd [[colorscheme tokyonight-moon]]
         end,
     },
 
@@ -95,7 +109,7 @@ require('lazy').setup({
             require('lualine').setup {
                 sections = {
                     lualine_b = { "grapple" },
-                    lualine_x = { 'copilot' ,'encoding', 'fileformat', 'filetype' }
+                    lualine_x = { 'copilot', 'encoding', 'fileformat', 'filetype' }
                 }
             }
         end,
@@ -124,12 +138,12 @@ require('lazy').setup({
         },
     },
 
-    -- LSP Zero (LSP client with zero config) 
+    -- LSP Zero (LSP client with zero config)
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v3.x',
     },
-    {'neovim/nvim-lspconfig'},
+    { 'neovim/nvim-lspconfig' },
     {
         'hrsh7th/nvim-cmp',
         dependencies = {
@@ -164,13 +178,13 @@ require('lazy').setup({
                     })
                 }),
                 sources = {
-                    { name = "copilot", group_index = 2 },
+                    { name = "copilot",  group_index = 2 },
                     { name = "nvim_lsp", group_index = 2 }
                 }
             })
         end
     },
-    {'L3MON4D3/LuaSnip'},
+    { 'L3MON4D3/LuaSnip' },
     "williamboman/mason.nvim",
     {
         "williamboman/mason-lspconfig.nvim",
@@ -179,13 +193,13 @@ require('lazy').setup({
             lsp.extend_lspconfig()
 
             lsp.on_attach(function(_, bufnr)
-                lsp.default_keymaps({buffer = bufnr, preserve_mappings = false})
+                lsp.default_keymaps({ buffer = bufnr, preserve_mappings = false })
             end)
 
             local lspconfig = require('lspconfig')
             require('mason').setup({})
             require('mason-lspconfig').setup({
-                -- Replace the language servers listed here 
+                -- Replace the language servers listed here
                 -- with the ones you want to install
                 ensure_installed = {
                     'rust_analyzer',
@@ -212,7 +226,8 @@ require('lazy').setup({
                         lspconfig.jdtls.setup({
                             cmd = {
                                 "jdtls",
-                                "--jvm-arg=" .. string.format("-javaagent:%s", vim.fn.expand "$MASON/share/jdtls/lombok.jar"),
+                                "--jvm-arg=" ..
+                                string.format("-javaagent:%s", vim.fn.expand "$MASON/share/jdtls/lombok.jar"),
                             },
                             configuration = {
                                 runtimes = {
@@ -232,7 +247,7 @@ require('lazy').setup({
     -- Rust
     {
         'rust-lang/rust.vim',
-        ft = {'rust'},
+        ft = { 'rust' },
         init = function()
             vim.g.rustfmt_autosave = 1
         end
@@ -243,7 +258,7 @@ require('lazy').setup({
     -- Show errors
     {
         "folke/trouble.nvim",
-        dependencies = {{ "nvim-tree/nvim-web-devicons" }},
+        dependencies = { { "nvim-tree/nvim-web-devicons" } },
     },
 
     -- Markdown preview
@@ -270,8 +285,47 @@ require('lazy').setup({
 
     {
         'goolord/alpha-nvim',
-        config = function ()
-            require'alpha'.setup(require'alpha.themes.dashboard'.config)
+        config = function()
+            require 'alpha'.setup(require 'alpha.themes.dashboard'.config)
         end
+    },
+
+    -- Pomodoro
+    {
+        "epwalsh/pomo.nvim",
+        version = "*", -- Recommended, use latest release instead of latest commit
+        lazy = true,
+        cmd = { "TimerStart", "TimerRepeat" },
+        dependencies = {
+            -- Optional, but highly recommended if you want to use the "Default" timer
+            "rcarriga/nvim-notify",
+        },
+        opts = {
+            -- See below for full list of options 👇
+        },
+    },
+
+    -- Obsidian
+    {
+        "epwalsh/obsidian.nvim",
+        version = "*", -- recommended, use latest release instead of latest commit
+        lazy = true,
+        ft = "markdown",
+        dependencies = {
+            -- Required.
+            "nvim-lua/plenary.nvim",
+        },
+        opts = {
+            workspaces = {
+                {
+                    name = "personal",
+                    path = "~/Documents/Obsidian Vault"
+                }
+            },
+            daily_notes = {
+                -- Optional, if you keep daily notes in a separate directory.
+                folder = "daily"
+            }
+        }
     }
 })

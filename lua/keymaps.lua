@@ -25,3 +25,19 @@ vim.keymap.set("n", "<leader>md", "<CMD>MarkdownPreviewToggle<CR>")
 -- Grapple
 vim.keymap.set("n", "<leader>t", require("grapple").toggle)
 vim.keymap.set("n", "<leader>p", require("grapple").toggle_tags)
+
+-- Copilot chat
+vim.keymap.set("n", "<leader>cch", function ()
+    local actions = require("CopilotChat.actions")
+    require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+end)
+vim.keymap.set("n", "<leader>ccp", function ()
+    local actions = require("CopilotChat.actions")
+    require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+end)
+vim.keymap.set("n", "<leader>ccq", function ()
+    local input = vim.fn.input("Quick Chat: ")
+    if input ~= "" then
+        require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+    end
+end)

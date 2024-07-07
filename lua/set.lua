@@ -30,3 +30,6 @@ vim.opt.colorcolumn = "120"
 
 --copy to system clipboard
 vim.opt.clipboard = "unnamedplus"
+
+--conceallevel (show markdown as formatted text)
+vim.opt.conceallevel = 2
