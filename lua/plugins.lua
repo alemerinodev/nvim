@@ -21,7 +21,7 @@ require('lazy').setup({
     -- Telescope (find files)
     {
         'nvim-telescope/telescope.nvim',
-        tag = '0.1.2',
+        tag = '0.1.8',
         -- or                            , branch = '0.1.x',
         dependencies = { { 'nvim-lua/plenary.nvim' } }
     },
@@ -38,7 +38,7 @@ require('lazy').setup({
         end,
         config = function()
             require 'nvim-treesitter.configs'.setup {
-                ensure_installed = { "javascript", "lua", "vim", "vimdoc", "typescript", "go", "rust", "kotlin", "c", "cpp" },
+                ensure_installed = { "javascript", "lua", "vim", "vimdoc", "typescript", "go", "rust", "kotlin", "c", "cpp", "gleam" },
                 sync_install = false,
                 auto_install = true,
                 highlight = {
@@ -57,7 +57,6 @@ require('lazy').setup({
         "zbirenbaum/copilot.lua",
         cmd = "Copilot",
         event = "InsertEnter",
-        lazy = true,
         config = function()
             require("copilot").setup({
                 suggestion = { enabled = false },
@@ -197,6 +196,7 @@ require('lazy').setup({
             end)
 
             local lspconfig = require('lspconfig')
+            lspconfig.gleam.setup({})
             require('mason').setup({})
             require('mason-lspconfig').setup({
                 -- Replace the language servers listed here
@@ -204,7 +204,6 @@ require('lazy').setup({
                 ensure_installed = {
                     'rust_analyzer',
                     'gopls',
-                    'tsserver',
                     'jdtls',
                     'kotlin_language_server',
                     'lua_ls',
@@ -309,8 +308,8 @@ require('lazy').setup({
     {
         "epwalsh/obsidian.nvim",
         version = "*", -- recommended, use latest release instead of latest commit
-        lazy = true,
-        ft = "markdown",
+        --lazy = true,
+        --ft = "markdown",
         dependencies = {
             -- Required.
             "nvim-lua/plenary.nvim",
