@@ -15,10 +15,6 @@ vim.keymap.set('n', '<leader>fr', builtin.lsp_references, {})
 -- FORMAT
 vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, {})
 
--- ERRORS
-local trouble = require('trouble')
-vim.keymap.set('n', '<leader>ct', function() trouble.open() end, {})
-
 -- Markdown
 vim.keymap.set("n", "<leader>md", "<CMD>MarkdownPreviewToggle<CR>")
 
@@ -27,20 +23,18 @@ vim.keymap.set("n", "<leader>t", require("grapple").toggle)
 vim.keymap.set("n", "<leader>p", require("grapple").toggle_tags)
 
 -- Copilot chat
-vim.keymap.set("n", "<leader>cch", function ()
-    local actions = require("CopilotChat.actions")
-    require("CopilotChat.integrations.telescope").pick(actions.help_actions())
-end)
 vim.keymap.set("n", "<leader>ccp", function ()
     local actions = require("CopilotChat.actions")
     require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
 end)
+local copilot = require("CopilotChat")
 vim.keymap.set("n", "<leader>ccq", function ()
     local input = vim.fn.input("Quick Chat: ")
     if input ~= "" then
-        require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+        copilot.ask(input, { selection = require("CopilotChat.select").buffer })
     end
 end)
+vim.keymap.set('n', '<leader>cco', copilot.toggle)
 
 -- Change between buffers
 --vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
