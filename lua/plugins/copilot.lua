@@ -3,12 +3,13 @@ return {
         "zbirenbaum/copilot.lua",
         cmd = "Copilot",
         event = "InsertEnter",
-        config = function()
-            require("copilot").setup({
-                suggestion = { enabled = false },
-                panel = { enabled = false },
-            })
-        end
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+            suggestion = { enabled = false },
+            panel = { enabled = false },
+        },
     },
     {
         "zbirenbaum/copilot-cmp",
@@ -19,15 +20,24 @@ return {
     { 'AndreM222/copilot-lualine' },
     {
         "CopilotC-Nvim/CopilotChat.nvim",
-        branch = "main",
         dependencies = {
             { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
             { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
         },
         opts = {
             debug = false, -- Enable debugging
-            -- See Configuration section for rest
         },
-        -- See Commands section for default commands if you want to lazy load on them
+        keys = {
+            {"<leader>co", "<cmd>CopilotChatToggle<cr>" },
+        },
+        build = "make tiktoken",
+        config = function()
+            vim.keymap.set("n", "<leader>cq", function ()
+                local input = vim.fn.input("Quick Chat: ")
+                if input ~= "" then
+                    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+                end
+            end)
+        end
     }
 }
