@@ -6,7 +6,7 @@ return {
     end,
     config = function()
         require 'nvim-treesitter.configs'.setup {
-            ensure_installed = { "javascript", "lua", "vim", "vimdoc", "typescript", "go", "rust", "kotlin", "c", "cpp", "gleam" },
+            ensure_installed = { "javascript", "lua", "vim", "vimdoc", "typescript", "go", "rust", "kotlin", "c", "cpp", "gleam", "regex" },
             sync_install = false,
             auto_install = true,
             highlight = {

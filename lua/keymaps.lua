@@ -3,15 +3,6 @@ vim.g.mapleader = " "
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true })
 vim.keymap.set('n', '-', "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
--- TELESCOPE (navigation)
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-vim.keymap.set('n', '<leader>fc', builtin.commands, {})
-vim.keymap.set('n', '<leader>fr', builtin.lsp_references, {})
-
 -- FORMAT
 vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, {})
 
@@ -23,18 +14,12 @@ vim.keymap.set("n", "<leader>t", require("grapple").toggle)
 vim.keymap.set("n", "<leader>p", require("grapple").toggle_tags)
 
 -- Copilot chat
-vim.keymap.set("n", "<leader>ccp", function ()
-    local actions = require("CopilotChat.actions")
-    require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+vim.keymap.set("n", "<leader>cp", function()
+    local copilotchat = require("CopilotChat")
+    require("snacks.picker").pick(copilotchat.select_prompt())
 end)
 local copilot = require("CopilotChat")
-vim.keymap.set("n", "<leader>ccq", function ()
-    local input = vim.fn.input("Quick Chat: ")
-    if input ~= "" then
-        copilot.ask(input, { selection = require("CopilotChat.select").buffer })
-    end
-end)
-vim.keymap.set('n', '<leader>cco', copilot.toggle)
+vim.keymap.set('n', '<leader>co', copilot.toggle)
 
 -- Change between buffers
 --vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
