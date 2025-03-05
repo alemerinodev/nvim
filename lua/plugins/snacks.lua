@@ -22,7 +22,7 @@ return {
         statuscolumn = { enabled = true },
         words = { enabled = true },
         images = { enabled = false },
-        lazygit = { enabled = false },
+        lazygit = { enabled = true },
     },
     keys = {
         -- Top Pickers & Explorer
@@ -140,7 +140,7 @@ return {
                 Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
                 Snacks.toggle.inlay_hints():map("<leader>uh")
                 Snacks.toggle.indent():map("<leader>ug")
-                Snacks.toggle.dim():map("<leader>uD")
+                Snacks.toggle.dim():map("<leader>ud")
             end,
         })
   end,
