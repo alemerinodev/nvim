@@ -7,6 +7,10 @@ return {
         -- Required.
         "nvim-lua/plenary.nvim",
     },
+    keys = {
+        { "<leader>ot", "<cmd>ObsidianToday<cr>", desc = "Open today's note" },
+        { "<leader>oy", "<cmd>ObsidianYesterday<cr>", desc = "Open yesterday's note" },
+    },
     opts = {
         workspaces = {
             {
