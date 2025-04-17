@@ -70,8 +70,9 @@ return {
                     })
                 }),
                 sources = {
-                    { name = "nvim_lsp" },
-                    { name = "supermaven" }
+                    { name = "nvim_lsp", group_index = 2 },
+                    { name = "supermaven", group_index = 2  },
+                    { name = "copilot", group_index = 2  }
                 },
                 formatting = {
                     format = lspkind.cmp_format({
@@ -79,7 +80,17 @@ return {
                         menu = {
                             nvim_lsp = "[LSP]",
                             supermaven = "[SuperMaven]",
-                        }
+                            copilot = "[Copilot]"
+                        },
+                        before = function(entry, vim_item)
+                            if entry.source.name == "copilot" then
+                                vim_item.kind = ""
+                            end
+                            if entry.source.name == "supermaven" then
+                                vim.item.kind = ""
+                            end
+                            return vim_item
+                        end
                     }),
                 }
             })
