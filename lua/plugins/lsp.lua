@@ -31,8 +31,10 @@ return {
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v3.x',
+        dependencies = {
+            "neovim/nvim-lspconfig",
+        },
     },
-    { 'neovim/nvim-lspconfig' },
     {
         'hrsh7th/nvim-cmp',
         dependencies = {
@@ -41,6 +43,7 @@ return {
         config = function()
             local cmp = require('cmp')
             vim.opt.completeopt = { "menu", "menuone", "noselect" }
+            local lspkind = require('lspkind')
             cmp.setup({
                 mapping = cmp.mapping.preset.insert({
                     ['<S-Tab>'] = cmp.mapping.select_prev_item(),
@@ -68,7 +71,16 @@ return {
                 }),
                 sources = {
                     { name = "nvim_lsp" },
-                    { name = "codecompanion" }
+                    { name = "supermaven" }
+                },
+                formatting = {
+                    format = lspkind.cmp_format({
+                        with_text = true,
+                        menu = {
+                            nvim_lsp = "[LSP]",
+                            supermaven = "[SuperMaven]",
+                        }
+                    }),
                 }
             })
         end

@@ -7,11 +7,10 @@ return {
             lsp.extend_lspconfig()
 
             lsp.on_attach(function(_, bufnr)
-                lsp.default_keymaps({ buffer = bufnr, preserve_mappings = false })
+                lsp.default_keymaps({ buffer = bufnr, preserve_mappings = true })
             end)
 
             local lspconfig = require('lspconfig')
-            lspconfig.gleam.setup({})
             require('mason').setup({})
             require('mason-lspconfig').setup({
                 -- Replace the language servers listed here
