@@ -1,8 +1,11 @@
 return {
     'nvim-java/nvim-java',
-    enabled = false, -- disable because don't work yet with mason 2.0
+    dependencies = {
+        'neovim/nvim-lspconfig',
+    },
+    enabled = true,
     config = function()
-        require("java").setup()
+        require('java').setup({})
+        require('lspconfig').jdtls.setup({})
     end,
-    priority = 1000,
 }
