@@ -1,6 +1,23 @@
 return {
     {
-        "neovim/nvim-lspconfig", -- datos de configuración
+        "neovim/nvim-lspconfig",
+        keys = {
+            { "<leader>cf", vim.lsp.buf.format, desc = "Format code" },
+            {
+                "<leader>co",
+                function()
+                    vim.lsp.buf.code_action({
+                        context = {
+                            only = { "source.organizeImports" },
+                            diagnostics = {},
+                        },
+                        apply = true,
+                    })
+                end,
+                desc = "Organize imports",
+            },
+
+        },
     },
 
     {
@@ -20,7 +37,7 @@ return {
         },
     },
 
-        {
+    {
         "mason-org/mason-lspconfig.nvim",
         opts = {
             ensure_installed = { "lua_ls", "rust_analyzer", "ts_ls", "eslint", "tailwindcss", "jsonls", "html" },

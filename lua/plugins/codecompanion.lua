@@ -20,7 +20,8 @@ return {
     keys = {
         -- Top Pickers & Explorer
         { "<leader>cp", "<cmd>CodeCompanion<cr>", mode = { "n", "v" }, noremap = true, silent = true, desc = "Open AI Prompt" },
-        { "<leader>cc", "<cmd>CodeCompanionChat<cr>", mode = { "n", "v" }, noremap = true, silent = true, desc = "Open AI chat" },
+        { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, noremap = true, silent = true, desc = "Open AI chat" },
+        { "<leader>cv", "<cmd>CodeCompanionChat Add<cr>", mode = { "n", "v" }, noremap = true, silent = true, desc = "Open AI chat" },
         { "<leader>ca", "<cmd>CodeCompanionActions<cr>", mode = { "n", "v" }, noremap = true, silent = true, desc = "Open AI actions" }
     }
 }
