@@ -2,7 +2,7 @@ return {
     {
         "neovim/nvim-lspconfig",
         keys = {
-            { "<leader>cf", vim.lsp.buf.format, desc = "Format code" },
+            { "<leader>cf", vim.lsp.buf.format, mode = {"n", "v"}, desc = "Format code" },
             {
                 "<leader>co",
                 function()
