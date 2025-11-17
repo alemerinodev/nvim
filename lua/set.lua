@@ -33,3 +33,7 @@ vim.opt.clipboard = "unnamedplus"
 
 --conceallevel (show markdown as formatted text)
 vim.opt.conceallevel = 2
+
+-- Use login shell to load sdkman and other shell configurations
+vim.opt.shell = 'zsh'
+vim.opt.shellcmdflag = '-lc'
